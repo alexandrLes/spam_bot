@@ -27,26 +27,18 @@ async def handle_message(message: Message):
         try:
             # Удаление сообщения
             await message.delete()
+
+            logging.info(f'Message: {message.text}')
             
             # Блокировка пользователя
             await bot.ban_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
             
-            # Уведомление администратора
-            await bot.send_message(
-                chat_id=message.chat.id,
-                text=f"Пользователь {message.from_user.full_name} ({message.from_user.id}) был заблокирован за спам."
-            )
         except Exception as e:
             logging.error(f"Ошибка при удалении сообщения или блокировке пользователя: {e}")
 
     if len(message.text) > 1000:
         try:
             await message.delete()
-
-            await bot.send_message(
-                chat_id=message.chat.id,
-                text=f"Пользователь {message.from_user.full_name} ({message.from_user.id}) был заблокирован за спам."
-            )
         except Exception as e:
             logging.error(f"Ошибка при удалении сообщения или блокировке пользователя: {e}")
 
