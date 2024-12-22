@@ -25,13 +25,17 @@ async def handle_chat_id(message: Message):
 async def handle_message(message: Message):
     if any(keyword in message.text.lower() for keyword in SPAM_KEYWORDS) or is_spam(message.text.lower()):
         try:
+            #await bot.send_message(471761840, f"Delete message:\n\n {message.text}")
+            await bot.send_message(356780793, f"Delete message:\n\n {message.text}")
+
             # Удаление сообщения
             await message.delete()
 
             logging.info(f'Message: {message.text}')
-            
+
             # Блокировка пользователя
             await bot.ban_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
+
             
         except Exception as e:
             logging.error(f"Ошибка при удалении сообщения или блокировке пользователя: {e}")
