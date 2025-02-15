@@ -40,6 +40,7 @@ SPAM_PATTERNS = [
     r"удаленк",
     r"удалёнк",
     r"прибыль",
+    r"долг"
 ]
 
 def is_spam(message_text):

@@ -4,10 +4,8 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from config import SPAM_KEYWORDS, is_spam
 
-# Логирование
 logging.basicConfig(level=logging.INFO)
 
-# Инициализация бота и диспетчера
 TOKEN = "7938100044:AAEkskIwInsETF6v5dSXyZJ6OV1aZNen9ng"
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
