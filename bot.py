@@ -36,6 +36,17 @@ def replace_hidden_chars(text):
 
     return text
 
+def calculate_percent_symbols(text):
+    ALLOWED_SYMBOLS = 'qwertyuiopasdfghjklzxcvbnmйцукенгшщзхъфывапролджэёячсмитьбю'
+    counter = 0
+    for ch in text:
+        if ch not in ALLOWED_SYMBOLS:
+            counter += 1
+    if counter >= len(text)//2:
+        return True
+    return False
+
+
 @router.message(F.text == "chat_id")
 async def handle_chat_id(message: Message):
     chat_id = message.chat.id
@@ -44,9 +55,8 @@ async def handle_chat_id(message: Message):
 @dp.message(F.text)
 async def handle_message(message: Message):
     message_text = replace_hidden_chars(message.text)
-    if any(keyword in message.text.lower() for keyword in SPAM_KEYWORDS) or is_spam(message.text.lower()) or any(keyword in message_text.lower() for keyword in SPAM_KEYWORDS):
+    if any(keyword in message.text.lower() for keyword in SPAM_KEYWORDS) or is_spam(message.text.lower()) or any(keyword in message_text.lower() for keyword in SPAM_KEYWORDS) or calculate_percent_symbols(message_text.lower()):
         try:
-            # Попытка отправить сообщение в первый чат
             await bot.send_message(471761840, f"Delete message:\n\n {message.text}")
         except Exception as e:
             logging.warning(f"Не удалось отправить сообщение в чат 471761840: {e}")
