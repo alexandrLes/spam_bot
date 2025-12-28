@@ -4,9 +4,11 @@ import os
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from config import SPAM_KEYWORDS, is_spam
+from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
 
+load_dotenv()
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
