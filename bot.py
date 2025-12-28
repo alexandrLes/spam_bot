@@ -1,12 +1,13 @@
 import asyncio
 import logging
+import os
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from config import SPAM_KEYWORDS, is_spam
 
 logging.basicConfig(level=logging.INFO)
 
-TOKEN = "7938100044:AAEkskIwInsETF6v5dSXyZJ6OV1aZNen9ng"
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 router = Router()
@@ -57,22 +58,14 @@ async def handle_message(message: Message):
     message_text = replace_hidden_chars(message.text)
     if any(keyword in message.text.lower() for keyword in SPAM_KEYWORDS) or is_spam(message.text.lower()) or any(keyword in message_text.lower() for keyword in SPAM_KEYWORDS) or calculate_percent_symbols(message_text.lower()):
         try:
-            await bot.send_message(471761840, f"Delete message:\n\n {message.text}")
-        except Exception as e:
-            logging.warning(f"Не удалось отправить сообщение в чат 471761840: {e}")
-
-        try:
-            # Попытка отправить сообщение во второй чат
             await bot.send_message(356780793, f"Delete message:\n\n {message.text}")
         except Exception as e:
             logging.warning(f"Не удалось отправить сообщение в чат 356780793: {e}")
 
         try:
-            # Удаление сообщения
             await message.delete()
             logging.info(f'Message deleted: {message.text}')
 
-            # Блокировка пользователя
             await bot.ban_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
             logging.info(f'User {message.from_user.id} banned.')
 
